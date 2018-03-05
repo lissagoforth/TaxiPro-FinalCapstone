@@ -1,6 +1,0 @@
-## GIVEN
-
-## WHEN
-
-## THEN
-
