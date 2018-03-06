@@ -21,5 +21,8 @@ namespace TaxiPro.Models
         [Required]
         public int TestTypeId { get; set; }
         public TestType TestType { get; set; }
+
+        public virtual ICollection<Option> Options { get; set; }
+
     }
 }

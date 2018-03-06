@@ -33,5 +33,8 @@ namespace TaxiPro.Models
 
         [Required]
         public string Phone { get; set; }
+
+        public virtual ICollection<StudentAnswer> StudentAnswers { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

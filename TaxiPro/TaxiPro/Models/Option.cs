@@ -21,6 +21,6 @@ namespace TaxiPro.Models
         [Required]
         public string Content { get; set; }
 
-        public virtual ICollection<StudentAnswer> StudentAnswer { get; set; }
+        public virtual ICollection<StudentAnswer> StudentAnswers { get; set; }
     }
 }

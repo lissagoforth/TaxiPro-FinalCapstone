@@ -11,8 +11,13 @@ namespace TaxiPro.Models
         [Key]
         public int Id { get; set; }
 
-        public virtual ICollection<Student> Student { get; set; }
+        [Required]
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
 
-        public virtual ICollection<Option> Option { get; set; }
+        [Required]
+        public int OptionId { get; set; }
+        public Option Option { get; set; }
+
     }
 }
