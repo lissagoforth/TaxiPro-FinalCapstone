@@ -22,8 +22,13 @@ namespace TaxiPro.Models
             DateTime = DateTime.Now;
         }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        [Required]
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
 
-        public virtual ICollection<Student> Students { get; set; }
+        [Required]
+        public int UserId { get; set; }
+        public ApplicationUser User { get; set; }
+
     }
 }
