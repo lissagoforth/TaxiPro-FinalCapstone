@@ -15,6 +15,14 @@ namespace TaxiPro.Data
         {
         }
 
+         public DbSet<Student> Student { get; set; }
+         public DbSet<StudentAnswer> StudentAnswer { get; set; }
+         public DbSet<TestType> TestType { get; set; }
+         public DbSet<Event> Event { get; set; }
+         public DbSet<Option> Option { get; set; }
+         public DbSet<Video> Video { get; set; }
+         public DbSet<Question> Question { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

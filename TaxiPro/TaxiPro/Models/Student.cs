@@ -30,5 +30,8 @@ namespace TaxiPro.Models
 
         [Required]
         public string Zip { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
     }
 }
