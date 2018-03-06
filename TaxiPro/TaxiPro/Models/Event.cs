@@ -27,7 +27,6 @@ namespace TaxiPro.Models
         public Student Student { get; set; }
 
         [Required]
-        public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
     }
