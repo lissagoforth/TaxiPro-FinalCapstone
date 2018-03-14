@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TaxiPro.Models;
 
 namespace TaxiPro.Controllers
 {
+    [Authorize]
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -158,6 +160,22 @@ namespace TaxiPro.Controllers
         private bool StudentExists(int id)
         {
             return _context.Student.Any(e => e.Id == id);
+        }
+
+        // POST: Students/AddAnswer/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAnswer(int id, int optionId)
+        {
+            var student = await _context.Student.SingleOrDefaultAsync(m => m.Id == id);
+            var sa = new StudentAnswer()
+            {
+                StudentId = id,
+                OptionId = optionId
+            };
+            _context.StudentAnswer.Add(sa);
+            await _context.SaveChangesAsync();
+            return View();
         }
     }
 }
