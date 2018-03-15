@@ -86,6 +86,8 @@ namespace TaxiPro.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    Order = table.Column<int>(nullable: false),
                     URL = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

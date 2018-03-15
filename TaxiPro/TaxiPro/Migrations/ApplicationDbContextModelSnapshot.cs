@@ -310,6 +310,11 @@ namespace TaxiPro.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
+
                     b.Property<string>("URL")
                         .IsRequired();
 

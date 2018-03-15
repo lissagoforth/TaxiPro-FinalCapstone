@@ -11,7 +11,7 @@ using TaxiPro.Data;
 namespace TaxiPro.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180306213636_Initial")]
+    [Migration("20180315194950_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,11 @@ namespace TaxiPro.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
 
                     b.Property<string>("URL")
                         .IsRequired();

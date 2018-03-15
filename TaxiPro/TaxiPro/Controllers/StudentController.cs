@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaxiPro.Data;
 using TaxiPro.Models;
+using TaxiPro.Models.ViewModels;
 
 namespace TaxiPro.Controllers
 {
@@ -15,10 +17,12 @@ namespace TaxiPro.Controllers
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public StudentController(ApplicationDbContext context)
+        public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Students
@@ -167,13 +171,48 @@ namespace TaxiPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAnswer(int id, int optionId)
         {
-            var student = await _context.Student.SingleOrDefaultAsync(m => m.Id == id);
             var sa = new StudentAnswer()
             {
                 StudentId = id,
                 OptionId = optionId
             };
             _context.StudentAnswer.Add(sa);
+            await _context.SaveChangesAsync();
+            return View();
+        }
+
+        // GET: Students/AddEvent/5
+        public async Task<IActionResult> AddEvent(int? id)
+        {
+            var spvm = new StudentProfileViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var student = await _context.Student
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        // POST: Students/AddEvent/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEvent(int id, Event evt)
+        {
+            var evnt = new Event()
+            {
+                StudentId = id,
+                User = await _userManager.GetUserAsync(User),
+                DateTime = evt.DateTime,
+                Content = evt.Content
+            };
+            _context.Event.Add(evnt);
             await _context.SaveChangesAsync();
             return View();
         }

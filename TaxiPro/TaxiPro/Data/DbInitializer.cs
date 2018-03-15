@@ -45,15 +45,60 @@ namespace TaxiPro.Data
 
             var videos = new Video[]
              {
-                new Video{URL="Videos/Taxi Pro online - Navigation and Culture 1 - Hospitality and Professional.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Navigation and Culture 2 - Nashville triangle and finding your way.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Navigation and Culture 3 - Interstates and Highways.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Navigation and Culture 4 -  Making Conversation.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Navigation and Culture 5-  Neighborhoods and Suburbs.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Ordinance 1 - Permits.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Ordinance 2 - Equipment.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Ordinance 3 - Operation.mp4"},
-                new Video{URL="Videos/Taxi Pro online - Ordinance 4 - Passengers Bill of Rights.mp4"}
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Navigation and Culture 1 - Hospitality and Professional.mp4",
+                    Name = "Hospitality and Professional",
+                    Order = 1
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Navigation and Culture 2 - Nashville triangle and finding your way.mp4",
+                    Name = "Nashville triangle and finding your way",
+                    Order = 2
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Navigation and Culture 3 - Interstates and Highways.mp4",
+                    Name = "Interstates and Highways",
+                    Order = 3
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Navigation and Culture 4 -  Making Conversation.mp4",
+                    Name = "Making Conversation",
+                    Order = 4
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Navigation and Culture 5-  Neighborhoods and Suburbs.mp4",
+                    Name = "Neighborhoods and Suburbs",
+                    Order = 5
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Ordinance 1 - Permits.mp4",
+                    Name = "Permits",
+                    Order = 1
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Ordinance 2 - Equipment.mp4",
+                    Name = "Equipment",
+                    Order = 2
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Ordinance 3 - Operation.mp4",
+                    Name ="Operation",
+                    Order = 3
+                },
+                new Video
+                {
+                    URL = "Videos/Taxi Pro online - Ordinance 4 - Passengers Bill of Rights.mp4",
+                    Name = "Passengers Bill of Rights",
+                    Order = 4
+                }
              };
 
             foreach (Video v in videos)

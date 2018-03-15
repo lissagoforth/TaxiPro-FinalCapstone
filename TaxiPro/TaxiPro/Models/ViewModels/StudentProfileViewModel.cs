@@ -5,13 +5,10 @@ using System.Threading.Tasks;
 
 namespace TaxiPro.Models.ViewModels
 {
-    public class QuestionSetViewModel
+    public class StudentProfileViewModel
     {
         public Student Student { get; set; }
 
-        public Question Question { get; set; }
-
-        public IEnumerable<Option> Options { get; set; }
-
+        public virtual IEnumerable<Event> Events { get; set; }
     }
 }
