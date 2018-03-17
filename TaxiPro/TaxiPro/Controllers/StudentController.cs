@@ -216,5 +216,75 @@ namespace TaxiPro.Controllers
             await _context.SaveChangesAsync();
             return View();
         }
+
+        public IActionResult StartMessageView(int id)
+        {
+            var student = new Student();
+            student = _context.Student.Where(s => s.Id == id).SingleOrDefault();
+       
+            return View(student);
+        }
+
+        // GET: Videos
+        public async Task<IActionResult> GetVideo(int i, int test, int studentId)
+        {
+            List<Video> tv = _context.Video.ToList();
+            var student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+            if (test == 1)
+            {
+                // grab all videos with a URL that contains "Navigation"
+                var T1vids = tv.Where(v => v.URL.Contains("Navigation")).ToList();
+                var T1vv = new VideoViewModel()
+                {
+                    URL = T1vids[i].URL,
+                    Name = T1vids[i].Name,
+                    Order = T1vids[i].Order,
+                    Student = student
+                };
+                //if(i == 5)
+                //{
+                //    await GetTest(1, student.Id);
+                //}
+
+                return View(T1vv);
+            } else if (test == 2)
+            {
+                var T2vids = tv.Where(v => v.URL.Contains("Ordinance")).ToList();
+                var T2vv = new VideoViewModel()
+                {
+                    URL = T2vids[i].URL,
+                    Name = T2vids[i].Name,
+                    Order = T2vids[i].Order,
+                    Student = student
+                };
+
+                return View(T2vv);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        // GET: Student/TestView
+        public async Task<IActionResult> GetTest(int testTypeId, int studentId)
+        {
+            IQueryable<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId);
+            IQueryable<Option> to = null;
+
+            foreach (var item in tq)
+            {
+                to = _context.Option.Where(o => o.QuestionId == item.Id);
+            }
+
+            var qsvm = new TestSetViewModel();
+
+            qsvm.Questions = tq;
+            qsvm.Options = to;
+            qsvm.Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+            qsvm.User = await _userManager.GetUserAsync(User);
+
+            return View(qsvm);
+        }
     }
 }

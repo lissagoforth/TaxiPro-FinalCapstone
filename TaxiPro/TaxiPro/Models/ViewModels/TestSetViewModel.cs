@@ -13,8 +13,8 @@ namespace TaxiPro.Models.ViewModels
 
         public IEnumerable<Video> Videos { get; set; }
 
-       // public Student Student { get; set; }
+        public Student Student { get; set; }
 
-       // public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

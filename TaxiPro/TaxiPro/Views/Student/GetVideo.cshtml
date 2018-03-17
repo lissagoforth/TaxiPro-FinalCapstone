@@ -1,0 +1,57 @@
+﻿@model TaxiPro.Models.ViewModels.VideoViewModel
+@{
+    ViewData["Title"] = "GetVideo";
+}
+
+@if ((@Model.URL.Contains("Navigation")) && (@Model.Order != 5))
+{
+    <div>
+        <h3>@Model.Order.) @Model.Name</h3>
+        <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
+
+        <div>
+            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="1">Next Video</a>
+        </div>
+    </div>
+}
+
+@if (@Model.URL.Contains("Navigation and Culture 5"))
+{
+    <div>
+        <h3>@Model.Order.) @Model.Name</h3>
+        <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
+
+        <div>
+            <a class="btn btn-default" asp-action="GetTest" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id">Begin Test </a>
+        </div>
+    </div>
+
+}
+
+@if ((@Model.URL.Contains("Ordinance")) && (@Model.Order != 4))
+{
+    <div>
+        <h3>@Model.Order.) @Model.Name</h3>
+        <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
+
+        <div>
+            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="2">Next Video</a>
+        </div>
+    </div>
+
+}
+
+@if ((@Model.URL.Contains("Ordinance")) && (@Model.Order == 4))
+{
+    <div>
+        <h3>@Model.Order.) @Model.Name</h3>
+        <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
+
+        <div>
+            <a class="btn btn-default" asp-action="GetTest" asp-route-testTypeId="1" asp-route-studentId="@Model.Student.Id">Begin Test </a>
+        </div>
+    </div>
+
+}
+<script>/js/site.js</script>
+
