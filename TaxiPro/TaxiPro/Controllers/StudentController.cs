@@ -178,6 +178,41 @@ namespace TaxiPro.Controllers
             };
             _context.StudentAnswer.Add(sa);
             await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        // POST: Students/AddAnswer/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTest(TestViewModel testViewModel, int test)
+        {
+            var student = testViewModel.StudentId;
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var tvm = new TestViewModel()
+            {
+                OptionIds = testViewModel.OptionIds,
+                StudentId = student,
+                User = user
+            };
+
+            foreach(var opt in tvm.OptionIds)
+            {
+                var sa = new StudentAnswer()
+                {
+                    StudentId = student,
+                    OptionId = opt
+                };
+                _context.StudentAnswer.Add(sa);
+                await _context.SaveChangesAsync();
+            }
+
+            if (test == 1)
+            {
+                return RedirectToAction("GetVideo", new {i = 0, test = 2, studentId = student});
+            }
+
             return View();
         }
 
@@ -226,7 +261,7 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Videos
-        public async Task<IActionResult> GetVideo(int i, int test, int studentId)
+        public IActionResult GetVideo(int i, int test, int studentId)
         {
             List<Video> tv = _context.Video.ToList();
             var student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
@@ -269,22 +304,26 @@ namespace TaxiPro.Controllers
         // GET: Student/TestView
         public async Task<IActionResult> GetTest(int testTypeId, int studentId)
         {
-            IQueryable<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId);
-            IQueryable<Option> to = null;
+            List<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId).ToList();
+            List<Option> to = new List<Option>();
 
             foreach (var item in tq)
             {
-                to = _context.Option.Where(o => o.QuestionId == item.Id);
+                var options = _context.Option.Where(o => o.QuestionId == item.Id);
+                foreach(var opt in options)
+                {
+                    to.Add(opt); 
+                }
             }
 
-            var qsvm = new TestSetViewModel();
+            var tsvm = new TestSetViewModel();
 
-            qsvm.Questions = tq;
-            qsvm.Options = to;
-            qsvm.Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
-            qsvm.User = await _userManager.GetUserAsync(User);
+            tsvm.Questions = tq;
+            tsvm.Options = to;
+            tsvm.Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+            tsvm.User = await _userManager.GetUserAsync(User);
 
-            return View(qsvm);
+            return View(tsvm);
         }
     }
 }

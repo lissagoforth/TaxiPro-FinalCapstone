@@ -45,7 +45,7 @@ namespace TaxiPro.Controllers
 
             var tsvm = new TestSetViewModel()
             {
-                Questions = tq,
+                //Questions = tq,
                 Options = to,
                 Videos = unique,
                 User = await _userManager.GetUserAsync(User),

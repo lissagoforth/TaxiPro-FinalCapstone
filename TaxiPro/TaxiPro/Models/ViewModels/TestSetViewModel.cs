@@ -7,7 +7,7 @@ namespace TaxiPro.Models.ViewModels
 {
     public class TestSetViewModel
     {
-        public IEnumerable<Question> Questions { get; set; }
+        public List<Question> Questions { get; set; }
 
         public IEnumerable<Option> Options { get; set; }
 

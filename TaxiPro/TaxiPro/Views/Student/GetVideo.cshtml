@@ -10,7 +10,7 @@
         <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
 
         <div>
-            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="1">Next Video</a>
+            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="1" asp-route-studentId="@Model.Student.Id">Next Video</a>
         </div>
     </div>
 }
@@ -22,7 +22,7 @@
         <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
 
         <div>
-            <a class="btn btn-default" asp-action="GetTest" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id">Begin Test </a>
+            <a class="btn btn-default" asp-controller="Student" asp-action="GetTest" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id">Begin Test </a>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
         <video width="1020" height="600" src="/@Model.URL" controls> @Model.Name </video>
 
         <div>
-            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="2">Next Video</a>
+            <a class="btn btn-default" asp-action="GetVideo" asp-route-i="@Model.Order" asp-route-test="2" asp-route-studentId="@Model.Student.Id">Next Video</a>
         </div>
     </div>
 
