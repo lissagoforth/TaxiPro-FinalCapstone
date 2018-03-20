@@ -1,0 +1,11 @@
+﻿@model TaxiPro.Models.Student
+@{
+    ViewData["Title"] = "CourseComplete";
+}
+
+<h2>Thank you, @Model.FirstName @Model.LastName</h2>
+
+<p>You have completed the TaxiPro Course. Please notify someone in the office that you have finished.</p>
+<p>----------------------------Everything below this line is for office use only----------------------------</p>
+<a asp-controller="Student" asp-action="Index">Back to List</a>
+

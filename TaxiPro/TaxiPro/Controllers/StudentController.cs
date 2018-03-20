@@ -49,14 +49,22 @@ namespace TaxiPro.Controllers
                 return NotFound();
             }
 
+            var spvm = new StudentProfileViewModel()
+            {
+                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
+                Events = _context.Event.Where(e => e.StudentId == id).ToList()
+            }; 
+
             var student = await _context.Student
+                .Include("Event")
                 .SingleOrDefaultAsync(m => m.Id == id);
+
             if (student == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(spvm);
         }
 
         // GET: Students/Create
@@ -192,17 +200,17 @@ namespace TaxiPro.Controllers
 
             var tvm = new TestViewModel()
             {
-                OptionIds = testViewModel.OptionIds,
+                Options = testViewModel.Options,
                 StudentId = student,
                 User = user
             };
 
-            foreach(var opt in tvm.OptionIds)
+            foreach(var opt in tvm.Options)
             {
                 var sa = new StudentAnswer()
                 {
                     StudentId = student,
-                    OptionId = opt
+                    OptionId = opt.Id
                 };
                 _context.StudentAnswer.Add(sa);
                 await _context.SaveChangesAsync();
@@ -213,13 +221,18 @@ namespace TaxiPro.Controllers
                 return RedirectToAction("GetVideo", new {i = 0, test = 2, studentId = student});
             }
 
-            return View();
+            return RedirectToAction("CourseComplete");
         }
 
         // GET: Students/AddEvent/5
         public async Task<IActionResult> AddEvent(int? id)
         {
-            var spvm = new StudentProfileViewModel();
+            var spvm = new StudentProfileViewModel()
+            {
+                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
+                Events = _context.Event.Where(e => e.StudentId == id).ToList()
+            };
+
             if (id == null)
             {
                 return NotFound();
@@ -232,7 +245,7 @@ namespace TaxiPro.Controllers
                 return NotFound();
             }
 
-            return View(student);
+            return View(spvm);
         }
 
         // POST: Students/AddEvent/5
@@ -247,9 +260,16 @@ namespace TaxiPro.Controllers
                 DateTime = evt.DateTime,
                 Content = evt.Content
             };
+
             _context.Event.Add(evnt);
             await _context.SaveChangesAsync();
-            return View();
+
+            var spvm = new StudentProfileViewModel()
+            {
+                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
+                Events = _context.Event.Where(e => e.StudentId == id).ToList()
+            };
+            return View(spvm);
         }
 
         public IActionResult StartMessageView(int id)
@@ -276,10 +296,6 @@ namespace TaxiPro.Controllers
                     Order = T1vids[i].Order,
                     Student = student
                 };
-                //if(i == 5)
-                //{
-                //    await GetTest(1, student.Id);
-                //}
 
                 return View(T1vv);
             } else if (test == 2)
@@ -324,6 +340,37 @@ namespace TaxiPro.Controllers
             tsvm.User = await _userManager.GetUserAsync(User);
 
             return View(tsvm);
+        }
+
+        public async Task<IActionResult> GradeTest(TestViewModel testvm, int test)
+        {
+            var student = testvm.StudentId;
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var tvm = new TestViewModel()
+            {
+                Options = testvm.Options,
+                StudentId = student,
+                User = user
+            };
+
+            var correct = 0;
+            foreach(var opt in tvm.Options)
+            {
+                if(opt.IsCorrect == true)
+                {
+                    correct++;
+                }
+            }
+
+            return Ok();
+        }
+
+        // GET: Students/Create
+        public IActionResult CourseComplete()
+        {
+            return View();
         }
     }
 }

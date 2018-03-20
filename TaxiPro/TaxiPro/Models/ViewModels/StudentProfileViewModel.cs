@@ -9,6 +9,6 @@ namespace TaxiPro.Models.ViewModels
     {
         public Student Student { get; set; }
 
-        public virtual IEnumerable<Event> Events { get; set; }
+        public virtual List<Event> Events { get; set; }
     }
 }
