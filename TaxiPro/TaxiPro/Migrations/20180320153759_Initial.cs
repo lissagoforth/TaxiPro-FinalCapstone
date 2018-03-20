@@ -49,6 +49,19 @@ namespace TaxiPro.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EventType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Student",
                 columns: table => new
                 {
@@ -207,14 +220,21 @@ namespace TaxiPro.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false),
+                    EventTypeId = table.Column<int>(nullable: false),
                     StudentId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Event", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Event_EventType_EventTypeId",
+                        column: x => x.EventTypeId,
+                        principalTable: "EventType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Event_Student_StudentId",
                         column: x => x.StudentId,
@@ -226,7 +246,7 @@ namespace TaxiPro.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,12 +303,19 @@ namespace TaxiPro.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    EventId = table.Column<int>(nullable: false),
                     OptionId = table.Column<int>(nullable: false),
                     StudentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StudentAnswer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswer_Event_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Event",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_StudentAnswer_Option_OptionId",
                         column: x => x.OptionId,
@@ -300,7 +327,7 @@ namespace TaxiPro.Migrations
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -343,6 +370,11 @@ namespace TaxiPro.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Event_EventTypeId",
+                table: "Event",
+                column: "EventTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Event_StudentId",
                 table: "Event",
                 column: "StudentId");
@@ -366,6 +398,11 @@ namespace TaxiPro.Migrations
                 name: "IX_Question_VideoId",
                 table: "Question",
                 column: "VideoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswer_EventId",
+                table: "StudentAnswer",
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentAnswer_OptionId",
@@ -396,22 +433,25 @@ namespace TaxiPro.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Event");
-
-            migrationBuilder.DropTable(
                 name: "StudentAnswer");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Event");
 
             migrationBuilder.DropTable(
                 name: "Option");
 
             migrationBuilder.DropTable(
+                name: "EventType");
+
+            migrationBuilder.DropTable(
                 name: "Student");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Question");

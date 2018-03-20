@@ -56,7 +56,6 @@ namespace TaxiPro.Controllers
             }; 
 
             var student = await _context.Student
-                .Include("Event")
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (student == null)
@@ -225,21 +224,21 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Students/AddEvent/5
-        public async Task<IActionResult> AddEvent(int? id)
+        public async Task<IActionResult> AddEvent(int? studentId)
         {
             var spvm = new StudentProfileViewModel()
             {
-                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
-                Events = _context.Event.Where(e => e.StudentId == id).ToList()
+                Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
+                Events = _context.Event.Where(e => e.StudentId == studentId).ToList()
             };
 
-            if (id == null)
+            if (studentId == null)
             {
                 return NotFound();
             }
 
             var student = await _context.Student
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == studentId);
             if (student == null)
             {
                 return NotFound();
@@ -251,31 +250,35 @@ namespace TaxiPro.Controllers
         // POST: Students/AddEvent/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEvent(int id, Event evt)
+        public async Task<IActionResult> AddEvent(int studentId, string eventType)
         {
-            var evnt = new Event()
+            var evt = new Event()
             {
-                StudentId = id,
+                StudentId = studentId,
                 User = await _userManager.GetUserAsync(User),
-                DateTime = evt.DateTime,
-                Content = evt.Content
+                EventTypeId = _context.EventType.Where(evtt => evtt.Name == eventType).SingleOrDefault().Id
             };
 
-            _context.Event.Add(evnt);
+            _context.Event.Add(evt);
             await _context.SaveChangesAsync();
+            
+            if (eventType == "Course")
+            {
+                StartMessageView(studentId, evt.Id);
+            }
 
             var spvm = new StudentProfileViewModel()
             {
-                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
-                Events = _context.Event.Where(e => e.StudentId == id).ToList()
+                Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
+                Events = _context.Event.Where(e => e.StudentId == studentId).ToList()
             };
             return View(spvm);
         }
 
-        public IActionResult StartMessageView(int id)
+        public IActionResult StartMessageView(int studentId, int eventId)
         {
             var student = new Student();
-            student = _context.Student.Where(s => s.Id == id).SingleOrDefault();
+            student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
        
             return View(student);
         }
@@ -364,6 +367,13 @@ namespace TaxiPro.Controllers
                 }
             }
 
+            var trvm = new TestResultViewModel()
+            {
+                Answers = tvm.Options,
+                Student = _context.Student.Where(s => s.Id == tvm.StudentId).SingleOrDefault(),
+                User = user,
+                Correct = correct
+            };
             return Ok();
         }
 

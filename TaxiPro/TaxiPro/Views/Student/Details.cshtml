@@ -8,26 +8,26 @@
 
 <div>
     <h4>@Model.Student.FirstName @Model.Student.LastName</h4>
-    <p>Address: @Model.Student.Address</p>
-    <p>City: @Model.Student.City</p>
-    <p>State: @Model.Student.State</p>
-    <p>Zip: @Model.Student.Zip</p>
-    <p>Phone: @Model.Student.Phone</p>
-    <p>Notes: </p>
-    @foreach (var evt in Model.Events.Where(e => e.Content == "Note"))
+    <p><strong>Address:</strong> @Model.Student.Address</p>
+    <p><strong>City:</strong> @Model.Student.City</p>
+    <p><strong>State:</strong>@Model.Student.State</p>
+    <p><strong>Zip:</strong> @Model.Student.Zip</p>
+    <p><strong>Phone:</strong> @Model.Student.Phone</p>
+    <p><strong>Notes:</strong> </p>
+    @foreach (var evt in Model.Events.Where(e => e.EventTypeId == 1))
     {
         <p>@evt.User.UserName: @evt.Content</p>
     }
     
     <p>Course Results:</p>
-    @foreach (var evt in Model.Events.Where(e => e.Content == "Note"))
+    @foreach (var evt in Model.Events.Where(e => e.EventTypeId == 2))
     {
         <p></p>
     }
-    
+ </div>   
 
     <div>
-        <a asp-action="Start" asp-route-id="@Model.Student.Id">Start Course</a> |
+        <a asp-action="AddEvent" asp-route-studentId="@Model.Student.Id" asp-route-eventType="Course">Start Course</a> |
         <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>

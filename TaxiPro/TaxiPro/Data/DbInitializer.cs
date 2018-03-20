@@ -43,6 +43,18 @@ namespace TaxiPro.Data
             }
             context.SaveChanges();
 
+            var eventTypes = new EventType[]
+            {
+                new EventType{Name="Note"},
+                new EventType{Name="Course"}
+            };
+
+            foreach (EventType e in eventTypes)
+            {
+                context.EventType.Add(e);
+            }
+            context.SaveChanges();
+
             var videos = new Video[]
              {
                 new Video

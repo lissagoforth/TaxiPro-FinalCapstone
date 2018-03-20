@@ -11,7 +11,6 @@ namespace TaxiPro.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public string Content { get; set; }
 
         [Required]
@@ -21,6 +20,10 @@ namespace TaxiPro.Models
         {
             DateTime = DateTime.Now;
         }
+
+        [Required]
+        public int EventTypeId { get; set; }
+        public EventType EventType { get; set; }
 
         [Required]
         public int StudentId { get; set; }

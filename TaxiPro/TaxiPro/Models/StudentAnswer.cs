@@ -19,5 +19,8 @@ namespace TaxiPro.Models
         public int OptionId { get; set; }
         public Option Option { get; set; }
 
+        [Required]
+        public int EventId { get; set; }
+        public Event Event { get; set; }
     }
 }

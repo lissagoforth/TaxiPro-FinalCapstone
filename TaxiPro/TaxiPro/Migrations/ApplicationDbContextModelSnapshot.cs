@@ -184,10 +184,11 @@ namespace TaxiPro.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Content")
-                        .IsRequired();
+                    b.Property<string>("Content");
 
                     b.Property<DateTime>("DateTime");
+
+                    b.Property<int>("EventTypeId");
 
                     b.Property<int>("StudentId");
 
@@ -196,11 +197,26 @@ namespace TaxiPro.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EventTypeId");
+
                     b.HasIndex("StudentId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("TaxiPro.Models.EventType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventType");
                 });
 
             modelBuilder.Entity("TaxiPro.Models.Option", b =>
@@ -279,11 +295,15 @@ namespace TaxiPro.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("EventId");
+
                     b.Property<int>("OptionId");
 
                     b.Property<int>("StudentId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.HasIndex("OptionId");
 
@@ -370,6 +390,11 @@ namespace TaxiPro.Migrations
 
             modelBuilder.Entity("TaxiPro.Models.Event", b =>
                 {
+                    b.HasOne("TaxiPro.Models.EventType", "EventType")
+                        .WithMany()
+                        .HasForeignKey("EventTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("TaxiPro.Models.Student", "Student")
                         .WithMany("Events")
                         .HasForeignKey("StudentId")
@@ -404,6 +429,11 @@ namespace TaxiPro.Migrations
 
             modelBuilder.Entity("TaxiPro.Models.StudentAnswer", b =>
                 {
+                    b.HasOne("TaxiPro.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("TaxiPro.Models.Option", "Option")
                         .WithMany("StudentAnswers")
                         .HasForeignKey("OptionId")
