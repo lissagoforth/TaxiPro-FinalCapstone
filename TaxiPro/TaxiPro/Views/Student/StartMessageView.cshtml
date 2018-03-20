@@ -7,5 +7,5 @@
 <p>You are about to begin the TaxiPro course. You will be presented with a series of videos followed by a test. Once you begin the test, you must finish.</p> 
 <input id="I-understand" name="I-understand" type="checkbox"><label for=" I-understand"> I, @Model.FirstName @Model.LastName, understand.</label>
 <div>
-    <a disabled class="IU btn btn-default" asp-action="GetVideo" asp-route-i="0" asp-route-test="1" asp-route-studentId="@Model.Id">Get Started</a>
+    <a disabled class="IU btn btn-default" asp-action="GetVideo" asp-route-i="0" asp-route-eventId="@Context.Request.Query["eventId"]" asp-route-test="1" asp-route-studentId="@Model.Id">Get Started</a>
 </div>

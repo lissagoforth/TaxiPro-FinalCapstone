@@ -11,5 +11,6 @@ namespace TaxiPro.Models.ViewModels
         public string Name { get; set; }
         public int Order { get; set; }
         public Student Student { get; set; }
+        public int EventId { get; set; }
     }
 }

@@ -191,7 +191,7 @@ namespace TaxiPro.Controllers
         // POST: Students/AddAnswer/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTest(TestViewModel testViewModel, int test)
+        public async Task<IActionResult> AddTest(TestViewModel testViewModel, int eventId)
         {
             var student = testViewModel.StudentId;
 
@@ -199,32 +199,34 @@ namespace TaxiPro.Controllers
 
             var tvm = new TestViewModel()
             {
-                Options = testViewModel.Options,
+                OptionIds = testViewModel.OptionIds,
                 StudentId = student,
-                User = user
+                User = user,
+                TestTypeId = testViewModel.TestTypeId
             };
 
-            foreach(var opt in tvm.Options)
+            foreach(var opt in tvm.OptionIds)
             {
                 var sa = new StudentAnswer()
                 {
                     StudentId = student,
-                    OptionId = opt.Id
+                    OptionId = opt,
+                    EventId = eventId
                 };
                 _context.StudentAnswer.Add(sa);
                 await _context.SaveChangesAsync();
             }
 
-            if (test == 1)
+            if (testViewModel.TestTypeId == 2)
             {
-                return RedirectToAction("GetVideo", new {i = 0, test = 2, studentId = student});
+                return RedirectToAction("GetVideo", new {i = 0, test = 2, studentId = student, eventId = testViewModel.EventId});
             }
 
-            return RedirectToAction("CourseComplete");
+            return RedirectToAction("CourseComplete", new { studentId = student});
         }
 
         // GET: Students/AddEvent/5
-        public async Task<IActionResult> AddEvent(int? studentId)
+        public async Task<IActionResult> GetEvent(int? studentId)
         {
             var spvm = new StudentProfileViewModel()
             {
@@ -248,7 +250,7 @@ namespace TaxiPro.Controllers
         }
 
         // POST: Students/AddEvent/5
-        [HttpPost]
+       // [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEvent(int studentId, string eventType)
         {
@@ -264,7 +266,7 @@ namespace TaxiPro.Controllers
             
             if (eventType == "Course")
             {
-                StartMessageView(studentId, evt.Id);
+                return RedirectToAction("StartMessageView", new { studentId = studentId, eventId = evt.Id });
             }
 
             var spvm = new StudentProfileViewModel()
@@ -284,7 +286,7 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Videos
-        public IActionResult GetVideo(int i, int test, int studentId)
+        public IActionResult GetVideo(int i, int test, int studentId, int eventId)
         {
             List<Video> tv = _context.Video.ToList();
             var student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
@@ -297,7 +299,8 @@ namespace TaxiPro.Controllers
                     URL = T1vids[i].URL,
                     Name = T1vids[i].Name,
                     Order = T1vids[i].Order,
-                    Student = student
+                    Student = student,
+                    EventId = eventId
                 };
 
                 return View(T1vv);
@@ -309,7 +312,8 @@ namespace TaxiPro.Controllers
                     URL = T2vids[i].URL,
                     Name = T2vids[i].Name,
                     Order = T2vids[i].Order,
-                    Student = student
+                    Student = student,
+                    EventId = eventId
                 };
 
                 return View(T2vv);
@@ -321,7 +325,7 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Student/TestView
-        public async Task<IActionResult> GetTest(int testTypeId, int studentId)
+        public async Task<IActionResult> GetTest(int testTypeId, int studentId, int eventId)
         {
             List<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId).ToList();
             List<Option> to = new List<Option>();
@@ -341,25 +345,25 @@ namespace TaxiPro.Controllers
             tsvm.Options = to;
             tsvm.Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
             tsvm.User = await _userManager.GetUserAsync(User);
+            tsvm.EventId = eventId;
+            tsvm.TestTypeId = testTypeId;
 
             return View(tsvm);
         }
 
-        public async Task<IActionResult> GradeTest(TestViewModel testvm, int test)
+        public async Task<IActionResult> GradeTest(int studentId, int test)
         {
-            var student = testvm.StudentId;
+            var student = studentId;
 
             var user = await _userManager.GetUserAsync(User);
 
-            var tvm = new TestViewModel()
-            {
-                Options = testvm.Options,
-                StudentId = student,
-                User = user
-            };
+            var st = _context.StudentAnswer.Where(sa => sa.StudentId == studentId)
+                .Include("Option")
+                .Select(s => s.Option).ToList();
 
             var correct = 0;
-            foreach(var opt in tvm.Options)
+
+            foreach(var opt in st)
             {
                 if(opt.IsCorrect == true)
                 {
@@ -369,8 +373,8 @@ namespace TaxiPro.Controllers
 
             var trvm = new TestResultViewModel()
             {
-                Answers = tvm.Options,
-                Student = _context.Student.Where(s => s.Id == tvm.StudentId).SingleOrDefault(),
+                Answers = st,
+                Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
                 User = user,
                 Correct = correct
             };
@@ -378,9 +382,12 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Students/Create
-        public IActionResult CourseComplete()
+        public IActionResult CourseComplete(int studentId)
         {
-            return View();
+            var student = new Student();
+            student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+
+            return View(student);
         }
     }
 }

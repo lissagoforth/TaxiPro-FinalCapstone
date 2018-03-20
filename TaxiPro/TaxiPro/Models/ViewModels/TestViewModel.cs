@@ -7,8 +7,10 @@ namespace TaxiPro.Models.ViewModels
 {
     public class TestViewModel
     {
-        public List<Option> Options { get; set; }
+        public List<int> OptionIds { get; set; }
         public int StudentId { get; set; }
         public ApplicationUser User { get; set; }
+        public int EventId { get; set; }
+        public int TestTypeId { get; set; }
     }
 }

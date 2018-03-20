@@ -16,5 +16,9 @@ namespace TaxiPro.Models.ViewModels
         public Student Student { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        public int EventId { get; set; }
+
+        public int TestTypeId { get; set; }
     }
 }
