@@ -10,8 +10,14 @@
     padding-right: 15px;
 }
 
+.section {
+    border-bottom: 1px solid lightgrey;
+    margin: 3px;
+    padding: 3px;
+}
+
 .courseResult {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid lightgrey;
     margin: 3px;
     padding: 3px;
 }

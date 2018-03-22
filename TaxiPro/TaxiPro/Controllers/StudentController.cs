@@ -63,7 +63,10 @@ namespace TaxiPro.Controllers
 
                         if (bank.Count != 0)
                         {
-                            spvm.Result = new CourseViewModel();
+                            spvm.Result = new CourseViewModel()
+                            {
+                                DateTime = evt.DateTime
+                            };
                             spvm.Result.MapsTest = new TestResultViewModel();
                             spvm.Result.MapsTest.Answers = new List<StudentAnswer>();
                             spvm.Result.MapsTest.EventId = evt.Id;

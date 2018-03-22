@@ -71,14 +71,14 @@
                 </td>
                 <td>
                     <form asp-action="AddEvent">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-studentId="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                         <input type="hidden" name="StudentId" value="@item.Id" />
                         <input type="hidden" name="EventTypeId" value="2" />
                         <input type="hidden" name="User" value="@Context.User" />
                         <input type="submit" value="Start Course" />
                     </form>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-studentId="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

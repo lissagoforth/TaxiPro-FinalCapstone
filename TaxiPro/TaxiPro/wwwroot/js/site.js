@@ -6,6 +6,7 @@ checkboxes.click(function () {
     button.attr("disabled", !checkboxes.is(":checked"));
 });
 
+
 var videos = ["vid-1", "vid-2", "vid-3", "vid-4", "vid-5"]
 var i = 0
 var visvId = videos[i];
@@ -22,3 +23,9 @@ function nextVideo(divId) {
     
     i ++
     }
+
+
+function count() {
+    var answered = 0;
+    answered ++
+}

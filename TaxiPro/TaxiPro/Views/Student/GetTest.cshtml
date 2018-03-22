@@ -21,7 +21,7 @@
                 @foreach (var opt in Model.Questions[i].Options)
     {
             <div>
-                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" />
+                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" onclick="" />
                 <input name="StudentId" type="hidden" value="@Model.Student.Id" />
                 <input name="eventId" type="hidden" value="@Model.EventId" />
                 <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />

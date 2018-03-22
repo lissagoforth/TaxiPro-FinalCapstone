@@ -9,5 +9,6 @@ namespace TaxiPro.Models.ViewModels
     {
         public TestResultViewModel MapsTest { get; set; }
         public TestResultViewModel OrdinancesTest { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }
