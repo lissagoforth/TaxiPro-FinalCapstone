@@ -5,10 +5,18 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Student Details</h2>
-
+<h2>@Model.Student.FirstName @Model.Student.LastName</h2>
 <div>
-    <h4>@Model.Student.FirstName @Model.Student.LastName</h4>
+    <form asp-action="AddEvent">
+        <input type="hidden" name="StudentId" value="@Model.Student.Id" />
+        <input type="hidden" name="EventTypeId" value="2" />
+        <input type="hidden" name="User" value="@Context.User" />
+        <input type="submit" value="Start Course" />
+    </form> |
+    <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<div>
     <p><strong>Address:</strong> @Model.Student.Address</p>
     <p><strong>City:</strong> @Model.Student.City</p>
     <p><strong>State:</strong>@Model.Student.State</p>
@@ -20,39 +28,40 @@
         if(evt.EventTypeId == 1)
         {
             <div>
-                <p>@evt.User.UserName: @evt.Content</p>
+                <p><strong>@evt.User.UserName: </strong> @evt.Content</p>
             </div>
         }
     }
 
     <form asp-action="Addevent" method="post">
-        <textarea name="Content"></textarea>
+        <textarea name="Content"></textarea><br />
         <input type="hidden" name="StudentId" value="@Model.Student.Id" />
         <input type="hidden" name="EventTypeId" value="1" />
         <input type="submit" value="Add Note" />
     </form>
 
     <h4>Course Results:</h4>
-    @foreach(var c in Model.Events)
-    {
-        if (c.EventTypeId == 2)
+        @foreach(var r in Model.Results)
         {
-            foreach(var r in Model.Results)
+            if(r.MapsTest != null)
             {
-                <div>
-                    <p><strong>Course initiated by: </strong>@c.User.UserName</p>
+                <div class="courseResult">
+                    <p><strong>Course initiated by: </strong>@r.MapsTest.User.UserName</p>
                     <p><strong>Maps and Culture: </strong>@r.MapsTest.Correct correct out of 30.</p>
                     <p><strong>Taxi Ordinances: </strong>@r.OrdinancesTest.Correct correct out of 30.</p>
                 </div>
             }
-
         }
 
-    }
 </div>
 
 <div>
-    <a asp-action="AddEvent" asp-route-studentId="@Model.Student.Id" asp-route-eventType="Course">Start Course</a> |
+    <form asp-action="AddEvent">
+        <input type="hidden" name="StudentId" value="@Model.Student.Id" />
+        <input type="hidden" name="EventTypeId" value="2" />
+        <input type="hidden" name="User" value="@Context.User" />
+        <input type="submit" value="Start Course" />
+    </form> |
     <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

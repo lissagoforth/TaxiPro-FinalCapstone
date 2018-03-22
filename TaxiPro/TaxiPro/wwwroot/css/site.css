@@ -10,6 +10,11 @@
     padding-right: 15px;
 }
 
+.courseResult {
+    border-bottom: 1px solid black;
+    margin: 3px auto;
+    padding: 3px 0;
+}
 /* Carousel */
 .carousel-caption p {
 font-size: 20px;

@@ -48,59 +48,54 @@ namespace TaxiPro.Controllers
                 var spvm = new StudentProfileViewModel()
                 {
                     Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
-                    Events = _context.Event.Include("User").Where(e => e.StudentId == studentId).ToList()
-                };
+                    Events = _context.Event.Include("User").Where(e => e.StudentId == studentId).ToList(),
+                    Results = new List<CourseViewModel>(),
+            };
 
-                var cvm = new CourseViewModel();
-                cvm.MapsTest = new TestResultViewModel();
-                cvm.MapsTest.Answers = new List<StudentAnswer>();
-                cvm.OrdinancesTest = new TestResultViewModel();
-                cvm.OrdinancesTest.Answers = new List<StudentAnswer>();
 
                 foreach (var evt in spvm.Events)
                 {
-                    var tr = new TestResultViewModel();
                     if (evt.EventTypeId == 2)
                     {
+                        var bank = new List<StudentAnswer>();
 
-                        tr.Answers = _context.StudentAnswer.Include(st => st.Option).ThenInclude(o => o.Question).Where(sa => sa.EventId == evt.Id).ToList();
-                        tr.Student = spvm.Student;
-                        tr.User = evt.User;
-                        tr.EventId = evt.Id;
+                        bank = _context.StudentAnswer.Include(sa => sa.Option).ThenInclude(o => o.Question).Where(sa => sa.EventId == evt.Id).ToList();
 
-                        if (tr.Answers.Count != 0)
+                        if (bank.Count != 0)
                         {
-                            int correct = GradeTest(tr);
-                            tr.Correct = correct;
+                            spvm.Result = new CourseViewModel();
+                            spvm.Result.MapsTest = new TestResultViewModel();
+                            spvm.Result.MapsTest.Answers = new List<StudentAnswer>();
+                            spvm.Result.MapsTest.EventId = evt.Id;
+                            spvm.Result.MapsTest.User = evt.User;
+                            spvm.Result.MapsTest.Student = spvm.Student;
 
-                            cvm.MapsTest.Correct = correct;
-                            cvm.MapsTest.EventId = evt.Id;
-                            cvm.MapsTest.User = evt.User;
-                            cvm.MapsTest.Student = spvm.Student;
+                            spvm.Result.OrdinancesTest = new TestResultViewModel();
+                            spvm.Result.OrdinancesTest.Answers = new List<StudentAnswer>();
+                            spvm.Result.OrdinancesTest.EventId = evt.Id;
+                            spvm.Result.OrdinancesTest.User = evt.User;
+                            spvm.Result.OrdinancesTest.Student = spvm.Student;
 
-                            cvm.OrdinancesTest.Correct = correct;
-                            cvm.OrdinancesTest.EventId = evt.Id;
-                            cvm.OrdinancesTest.User = evt.User;
-                            cvm.OrdinancesTest.Student = spvm.Student;
-
-                            foreach(var a in tr.Answers)
+                            foreach(var a in bank)
                             {
                                 if (a.Option.Question.TestTypeId == 2)
                                 {
-                                    cvm.MapsTest.Answers.Add(a);
+                                    spvm.Result.MapsTest.Answers.Add(a);
                                 }
                                 if (a.Option.Question.TestTypeId == 1)
                                 {
-                                    cvm.OrdinancesTest.Answers.Add(a);
+                                    spvm.Result.OrdinancesTest.Answers.Add(a);
                                 }
 
                             }
+                            spvm.Result.MapsTest.Correct = GradeTest(spvm.Result.MapsTest);
 
+                            spvm.Result.OrdinancesTest.Correct = GradeTest(spvm.Result.OrdinancesTest);
+                            spvm.Results.Add(spvm.Result);
                         }
+
                     }
                 }
-                spvm.Results = new List<CourseViewModel>();
-                spvm.Results.Add(cvm);
 
                 if (studentId == null)
                 {
@@ -444,7 +439,6 @@ namespace TaxiPro.Controllers
 
         public int GradeTest(TestResultViewModel trvm)
         {
-
             int correct = 0;
 
             foreach(var a in trvm.Answers)
