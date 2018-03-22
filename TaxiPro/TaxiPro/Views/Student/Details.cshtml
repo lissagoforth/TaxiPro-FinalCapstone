@@ -1,10 +1,11 @@
-﻿@model TaxiPro.Models.ViewModels.StudentProfileViewModel
+﻿
+@model TaxiPro.Models.ViewModels.StudentProfileViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Student Details</h2>
 
 <div>
     <h4>@Model.Student.FirstName @Model.Student.LastName</h4>
@@ -13,21 +14,45 @@
     <p><strong>State:</strong>@Model.Student.State</p>
     <p><strong>Zip:</strong> @Model.Student.Zip</p>
     <p><strong>Phone:</strong> @Model.Student.Phone</p>
-    <p><strong>Notes:</strong> </p>
-    @foreach (var evt in Model.Events.Where(e => e.EventTypeId == 1))
+    <h4><strong>Notes:</strong> </h4>
+    @foreach(var evt in Model.Events)
     {
-        <p>@evt.User.UserName: @evt.Content</p>
+        if(evt.EventTypeId == 1)
+        {
+            <div>
+                <p>@evt.User.UserName: @evt.Content</p>
+            </div>
+        }
     }
-    
-    <p>Course Results:</p>
-    @foreach (var evt in Model.Events.Where(e => e.EventTypeId == 2))
-    {
-        <p></p>
-    }
- </div>   
 
-    <div>
-        <a asp-action="AddEvent" asp-route-studentId="@Model.Student.Id" asp-route-eventType="Course">Start Course</a> |
-        <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <form asp-action="Addevent" method="post">
+        <textarea name="Content"></textarea>
+        <input type="hidden" name="StudentId" value="@Model.Student.Id" />
+        <input type="hidden" name="EventTypeId" value="1" />
+        <input type="submit" value="Add Note" />
+    </form>
+
+    <h4>Course Results:</h4>
+    @foreach(var c in Model.Events)
+    {
+        if (c.EventTypeId == 2)
+        {
+            foreach(var r in Model.Results)
+            {
+                <div>
+                    <p><strong>Course initiated by: </strong>@c.User.UserName</p>
+                    <p><strong>Maps and Culture: </strong>@r.MapsTest.Correct correct out of 30.</p>
+                    <p><strong>Taxi Ordinances: </strong>@r.OrdinancesTest.Correct correct out of 30.</p>
+                </div>
+            }
+
+        }
+
+    }
+</div>
+
+<div>
+    <a asp-action="AddEvent" asp-route-studentId="@Model.Student.Id" asp-route-eventType="Course">Start Course</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

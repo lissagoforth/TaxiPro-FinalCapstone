@@ -42,32 +42,84 @@ namespace TaxiPro.Controllers
         }
 
         // GET: Students/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? studentId)
         {
-            if (id == null)
             {
-                return NotFound();
+                var spvm = new StudentProfileViewModel()
+                {
+                    Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
+                    Events = _context.Event.Include("User").Where(e => e.StudentId == studentId).ToList()
+                };
+
+                var cvm = new CourseViewModel();
+                cvm.MapsTest = new TestResultViewModel();
+                cvm.MapsTest.Answers = new List<StudentAnswer>();
+                cvm.OrdinancesTest = new TestResultViewModel();
+                cvm.OrdinancesTest.Answers = new List<StudentAnswer>();
+
+                foreach (var evt in spvm.Events)
+                {
+                    var tr = new TestResultViewModel();
+                    if (evt.EventTypeId == 2)
+                    {
+
+                        tr.Answers = _context.StudentAnswer.Include(st => st.Option).ThenInclude(o => o.Question).Where(sa => sa.EventId == evt.Id).ToList();
+                        tr.Student = spvm.Student;
+                        tr.User = evt.User;
+                        tr.EventId = evt.Id;
+
+                        if (tr.Answers.Count != 0)
+                        {
+                            int correct = GradeTest(tr);
+                            tr.Correct = correct;
+
+                            cvm.MapsTest.Correct = correct;
+                            cvm.MapsTest.EventId = evt.Id;
+                            cvm.MapsTest.User = evt.User;
+                            cvm.MapsTest.Student = spvm.Student;
+
+                            cvm.OrdinancesTest.Correct = correct;
+                            cvm.OrdinancesTest.EventId = evt.Id;
+                            cvm.OrdinancesTest.User = evt.User;
+                            cvm.OrdinancesTest.Student = spvm.Student;
+
+                            foreach(var a in tr.Answers)
+                            {
+                                if (a.Option.Question.TestTypeId == 2)
+                                {
+                                    cvm.MapsTest.Answers.Add(a);
+                                }
+                                if (a.Option.Question.TestTypeId == 1)
+                                {
+                                    cvm.OrdinancesTest.Answers.Add(a);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+                spvm.Results = new List<CourseViewModel>();
+                spvm.Results.Add(cvm);
+
+                if (studentId == null)
+                {
+                    return NotFound();
+                }
+
+                var student = await _context.Student
+                    .SingleOrDefaultAsync(m => m.Id == studentId);
+                if (student == null)
+                {
+                    return NotFound();
+                }
+
+                return View(spvm);
             }
-
-            var spvm = new StudentProfileViewModel()
-            {
-                Student = _context.Student.Where(s => s.Id == id).SingleOrDefault(),
-                Events = _context.Event.Where(e => e.StudentId == id).ToList()
-            }; 
-
-            var student = await _context.Student
-                .SingleOrDefaultAsync(m => m.Id == id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return View(spvm);
         }
 
-        // GET: Students/Create
-        public IActionResult Create()
+            // GET: Students/Create
+            public IActionResult Create()
         {
             return View();
         }
@@ -234,6 +286,36 @@ namespace TaxiPro.Controllers
                 Events = _context.Event.Where(e => e.StudentId == studentId).ToList()
             };
 
+            var cvm = new CourseViewModel();
+
+            foreach(var evt in spvm.Events)
+            {
+                if (evt.EventTypeId == 2)
+                {
+                    var tr = new TestResultViewModel()
+                    {
+                        Answers = _context.StudentAnswer.Where(sa => sa.EventId == evt.Id).ToList(),
+                        Student = spvm.Student,
+                        User = await _userManager.FindByIdAsync(evt.User.Id),
+                        EventId = evt.Id,
+                    };
+
+                    int correct = GradeTest(tr);
+                    tr.Correct = correct;
+
+                    if (tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 2)
+                    {
+                        cvm.MapsTest = tr;
+                    }
+                    else if(tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 1)
+                    {
+                        cvm.OrdinancesTest = tr;
+                    }   
+                }
+            }
+            spvm.Results = new List<CourseViewModel>();
+            spvm.Results.Add(cvm);
+
             if (studentId == null)
             {
                 return NotFound();
@@ -252,29 +334,38 @@ namespace TaxiPro.Controllers
         // POST: Students/AddEvent/5
        // [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEvent(int studentId, string eventType)
+        public async Task<IActionResult> AddEvent(Event evnt)
         {
-            var evt = new Event()
-            {
-                StudentId = studentId,
-                User = await _userManager.GetUserAsync(User),
-                EventTypeId = _context.EventType.Where(evtt => evtt.Name == eventType).SingleOrDefault().Id
-            };
-
-            _context.Event.Add(evt);
-            await _context.SaveChangesAsync();
             
-            if (eventType == "Course")
+            if (evnt.EventTypeId == 2)
             {
-                return RedirectToAction("StartMessageView", new { studentId = studentId, eventId = evt.Id });
+                var evt = new Event()
+                {
+                    StudentId = evnt.StudentId,
+                    User = await _userManager.GetUserAsync(User),
+                    EventTypeId = evnt.EventTypeId
+                };
+
+                _context.Event.Add(evt);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("StartMessageView", new { studentId = evnt.StudentId, eventId = evt.Id });
             }
 
-            var spvm = new StudentProfileViewModel()
+            if(evnt.EventTypeId == 1)
             {
-                Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
-                Events = _context.Event.Where(e => e.StudentId == studentId).ToList()
-            };
-            return View(spvm);
+                var evt = new Event()
+                {
+                    StudentId = evnt.StudentId,
+                    User = await _userManager.GetUserAsync(User),
+                    EventTypeId = evnt.EventTypeId,
+                    Content = evnt.Content
+                };
+
+                _context.Event.Add(evt);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", new { studentId = evnt.StudentId });
+            }
+            return RedirectToAction("Details", new { studentId = evnt.StudentId});
         }
 
         public IActionResult StartMessageView(int studentId, int eventId)
@@ -351,34 +442,20 @@ namespace TaxiPro.Controllers
             return View(tsvm);
         }
 
-        public async Task<IActionResult> GradeTest(int studentId, int test)
+        public int GradeTest(TestResultViewModel trvm)
         {
-            var student = studentId;
 
-            var user = await _userManager.GetUserAsync(User);
+            int correct = 0;
 
-            var st = _context.StudentAnswer.Where(sa => sa.StudentId == studentId)
-                .Include("Option")
-                .Select(s => s.Option).ToList();
-
-            var correct = 0;
-
-            foreach(var opt in st)
+            foreach(var a in trvm.Answers)
             {
-                if(opt.IsCorrect == true)
+                if(a.Option.IsCorrect == true)
                 {
                     correct++;
                 }
             }
-
-            var trvm = new TestResultViewModel()
-            {
-                Answers = st,
-                Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
-                User = user,
-                Correct = correct
-            };
-            return Ok();
+            trvm.Correct = correct;
+            return correct;
         }
 
         // GET: Students/Create
