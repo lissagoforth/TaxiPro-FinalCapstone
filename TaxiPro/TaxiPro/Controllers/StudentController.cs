@@ -419,9 +419,9 @@ namespace TaxiPro.Controllers
             foreach (var item in tq)
             {
                 var options = _context.Option.Where(o => o.QuestionId == item.Id);
-                foreach(var opt in options)
+                foreach (var opt in options)
                 {
-                    to.Add(opt); 
+                    to.Add(opt);
                 }
             }
 
@@ -435,6 +435,27 @@ namespace TaxiPro.Controllers
             tsvm.TestTypeId = testTypeId;
 
             return View(tsvm);
+        }        
+        
+        // GET: Student/TestResultDetailView
+        public async Task<IActionResult> TestDetail(int testTypeId, int studentId, int eventId)
+        {
+            var tq = _context.Question.Include("TestType").Where(q => q.TestTypeId == testTypeId).ToList();
+
+            var ta = _context.StudentAnswer.Include(sa => sa.Option).ThenInclude(o => o.Question).Where(sa => sa.EventId == eventId && sa.Option.Question.TestTypeId == testTypeId).ToList();
+
+            var to = _context.Option.Include("Question").Where(o => o.Question.TestTypeId == testTypeId).ToList();
+
+            var trvm = new TestResultViewModel();
+
+            trvm.Questions = tq;
+            trvm.Options = to;
+            trvm.Answers = ta;
+            trvm.Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+            trvm.User = await _userManager.GetUserAsync(User);
+            trvm.EventId = eventId;
+
+            return View(trvm);
         }
 
         public int GradeTest(TestResultViewModel trvm)

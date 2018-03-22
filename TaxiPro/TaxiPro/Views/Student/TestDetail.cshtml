@@ -1,0 +1,30 @@
+﻿@model TaxiPro.Models.ViewModels.TestResultViewModel;
+@{
+    ViewData["Title"] = "TestDetail";
+}
+
+<h2>Results for @Model.Questions[0].TestType.Description</h2>
+@for (int i = 0; i < Model.Questions.Count(); i++)
+{
+    int num = (i + 1);
+    <div class="qset">
+
+        <h4> @num.) @Model.Questions[@i].Content </h4>
+
+        @if (Model.Questions[i].Content.Contains("attached map"))
+        {
+            <div><img src="~/images/TaxiPro Test Map.png" width="680" height="400" /></div>
+        }
+
+        @foreach (var opt in Model.Questions[i].Options)
+        {
+            <div>
+                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" checked="@(Model.Answers.Any(sa => sa.OptionId == opt.Id))" />
+                <label class="@(!opt.IsCorrect && (Model.Answers.Any(sa => sa.OptionId == opt.Id)) ? "wrongAnswer" : "") @(opt.IsCorrect ? "correctAnswer" : "")" for="@opt.QuestionId-@opt.Id">@opt.Content</label>
+            </div>
+        }
+
+    </div>
+
+}
+

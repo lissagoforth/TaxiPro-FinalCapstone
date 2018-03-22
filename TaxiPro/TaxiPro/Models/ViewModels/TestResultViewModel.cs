@@ -7,6 +7,8 @@ namespace TaxiPro.Models.ViewModels
 {
     public class TestResultViewModel
     {
+        public List<Question> Questions { get; set; }
+        public List<Option> Options { get; set; }
         public List<StudentAnswer> Answers { get; set; }
         public Student Student { get; set; }
         public ApplicationUser User { get; set; }

@@ -11,11 +11,15 @@
 @for(int i = 0; i < Model.Questions.Count(); i++ )
 {
     int num = (i + 1);
-        <div>
+            <div class="qset">
 
-            <h4> @num.) @Model.Questions[@i].Content </h4>
-            @foreach (var opt in Model.Questions[i].Options)
-            {
+                <h4> @num.) @Model.Questions[@i].Content </h4>
+                @if (Model.Questions[i].Content.Contains("attached map"))
+                {
+                    <div><img src="~/images/TaxiPro Test Map.png" width="680" height="400" /></div>
+                }
+                @foreach (var opt in Model.Questions[i].Options)
+    {
             <div>
                 <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" />
                 <input name="StudentId" type="hidden" value="@Model.Student.Id" />
@@ -23,9 +27,9 @@
                 <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />
                 <label for="@opt.QuestionId-@opt.Id">@opt.Content</label>
             </div>
-            }
+}
 
-        </div>
+            </div>
 
 }
         <div>

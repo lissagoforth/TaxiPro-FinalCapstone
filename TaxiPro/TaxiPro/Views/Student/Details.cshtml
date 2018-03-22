@@ -47,8 +47,8 @@
             {
                 <div class="courseResult">
                     <p><strong>Course initiated by: </strong>@r.MapsTest.User.UserName</p>
-                    <p><strong>Maps and Culture: </strong>@r.MapsTest.Correct correct out of 30.</p>
-                    <p><strong>Taxi Ordinances: </strong>@r.OrdinancesTest.Correct correct out of 30.</p>
+                    <p><a asp-action="TestDetail" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.MapsTest.EventId"><strong>Maps and Culture: </strong></a>@r.MapsTest.Correct correct out of 30.</p>
+                    <p><a asp-action="TestDetail" asp-route-testTypeId="1" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.OrdinancesTest.EventId"><strong>Taxi Ordinances: </strong></a>@r.OrdinancesTest.Correct correct out of 30.</p>
                 </div>
             }
         }

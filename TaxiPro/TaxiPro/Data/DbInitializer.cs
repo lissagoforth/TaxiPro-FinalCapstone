@@ -486,7 +486,7 @@ namespace TaxiPro.Data
                 },
                 new Question
                 {
-                    Content ="'H' is marked on the map, south of Downtown. What is 'H'?",
+                    Content ="'H' is marked on the attached map, south of Downtown. What is 'H'?",
                     VideoId =context.Video.SingleOrDefault(v => v.URL == "Videos/Taxi Pro online - Navigation and Culture 5-  Neighborhoods and Suburbs.mp4").Id,
                     TestTypeId =context.TestType.SingleOrDefault(t => t.Description == "Maps and Culture").Id
                 },

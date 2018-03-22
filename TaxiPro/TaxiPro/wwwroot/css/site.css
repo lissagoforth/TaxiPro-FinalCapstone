@@ -12,9 +12,29 @@
 
 .courseResult {
     border-bottom: 1px solid black;
-    margin: 3px auto;
-    padding: 3px 0;
+    margin: 3px;
+    padding: 3px;
 }
+
+.correctAnswer {
+    background-color: rgba(76, 255, 0, .4); 
+}
+
+.wrongAnswer {
+    background-color: rgba(255, 0, 0, .4);
+}
+
+div.qset {
+    margin: 5px;
+    padding: 5px;
+}
+
+div.qset, div {
+    margin: 2px;
+    padding: 2px;
+}
+
+
 /* Carousel */
 .carousel-caption p {
 font-size: 20px;
