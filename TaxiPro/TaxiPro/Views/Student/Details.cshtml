@@ -11,52 +11,57 @@
         <input type="hidden" name="StudentId" value="@Model.Student.Id" />
         <input type="hidden" name="EventTypeId" value="2" />
         <input type="hidden" name="User" value="@Context.User" />
-        <input type="submit" value="Start Course" /> |
+        <input type="submit" value="Start Course"class="button" /> |
     <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
     </form>
 </div>
 
-<div class="section">
-    <h4><strong><u>Contact Information</u></strong></h4>
-    <p><strong>Address:</strong> @Model.Student.Address</p>
-    <p><strong>City:</strong> @Model.Student.City</p>
-    <p><strong>State:</strong>@Model.Student.State</p>
-    <p><strong>Zip:</strong> @Model.Student.Zip</p>
-    <p><strong>Phone:</strong> @Model.Student.Phone</p>
+<div class="panel panel-default col-lg-8">
+    <h4 class="panel-heading"><strong>Contact Information</strong></h4>
+    <div class="panel-body">
+        <p><strong>Address:</strong> @Model.Student.Address</p>
+        <p><strong>City:</strong> @Model.Student.City</p>
+        <p><strong>State:</strong>@Model.Student.State</p>
+        <p><strong>Zip:</strong> @Model.Student.Zip</p>
+        <p><strong>Phone:</strong> @Model.Student.Phone</p>
+    </div>
 </div>
 
-<div class="section">
-    <h4><strong><u>Notes</u></strong> </h4>
+<div class="panel panel-default col-md-4">
+    <h4 class="panel-heading"><strong>Notes</strong> </h4>
     @foreach(var evt in Model.Events)
     {
         if(evt.EventTypeId == 1)
         {
-            <div>
-                <p><strong>@evt.User.UserName: </strong> @evt.Content</p>
+            <div class="list-group-item">
+                <p class="panel-title"><strong>@evt.User.UserName: </strong></p>
+                <p class="panel-body"> @evt.Content</p>
             </div>
         }
     }
 
-    <form asp-action="Addevent" method="post">
-        <textarea name="Content"></textarea><br />
+    <form class="col-md-4 panel-body list-group" asp-action="Addevent" method="post">
+        <input class="panel-body list-group" name="Content" />
         <input type="hidden" name="StudentId" value="@Model.Student.Id" />
         <input type="hidden" name="EventTypeId" value="1" />
-        <input type="submit" value="Add Note" />
+        <input type="submit" value="Add Note" class="button form-control"/>
     </form>
 </div>
 
-<div class="section">
-    <h4><strong><u>Course Results</u></strong></h4>
+<div class="col-md-4 panel panel-default">
+    <h4 class="panel-heading"><strong>Course Results</strong></h4>
         @foreach(var r in Model.Results)
         {
             if(r.MapsTest != null)
             {
-                <div class="courseResult">
-                    <p><strong>Course initiated by: </strong>@r.MapsTest.User.UserName on @r.DateTime</p>
-                    <p><a asp-action="TestDetail" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.MapsTest.EventId"><strong>Maps and Culture: </strong></a>@r.MapsTest.Correct correct out of 30.</p>
-                    <p><a asp-action="TestDetail" asp-route-testTypeId="1" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.OrdinancesTest.EventId"><strong>Taxi Ordinances: </strong></a>@r.OrdinancesTest.Correct correct out of 30.</p>
-                </div>
+            <div class="panel-body list-group-item">
+                <p class="panel-title"><strong>Course initiated by: </strong>@r.MapsTest.User.UserName on @r.DateTime</p>
+
+                <p class="list-group-item"><a asp-action="TestDetail" asp-route-testTypeId="2" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.MapsTest.EventId"><strong>Maps and Culture: </strong></a>@r.MapsTest.Correct correct out of 30.</p>
+
+                <p class="list-group-item"><a asp-action="TestDetail" asp-route-testTypeId="1" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.OrdinancesTest.EventId"><strong>Taxi Ordinances: </strong></a>@r.OrdinancesTest.Correct correct out of 30.</p>
+            </div>
             }
         }
 
@@ -66,7 +71,7 @@
             <input type="hidden" name="StudentId" value="@Model.Student.Id" />
             <input type="hidden" name="EventTypeId" value="2" />
             <input type="hidden" name="User" value="@Context.User" />
-            <input type="submit" value="Start Course" /> |
+            <input type="submit" value="Start Course" class="button"/> |
         <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
         </form> 

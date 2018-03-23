@@ -13,10 +13,10 @@ namespace TaxiPro.Data
             context.Database.EnsureCreated();
 
             // Look for any test types
-            //if (context.TestType.Any())
-            //{
-            //    return;   // DB has been seeded
-            //}
+            if (context.TestType.Any())
+            {
+                return;   // DB has been seeded
+            }
 
             var students = new Student[]
             {
@@ -510,7 +510,7 @@ namespace TaxiPro.Data
             }
             context.SaveChanges();
 
-            var options = new Option[]
+            var foobar = new Option[]
             {
                 new Option
                 {
@@ -1533,7 +1533,8 @@ namespace TaxiPro.Data
                     QuestionId = context.Question.SingleOrDefault(q => q.Content == "Old Hickory Lake is the body of water near 'H' on the attached map. Which of the following is closest to Old Hickory Lake?").Id
                 }
             };
-            foreach (Option o in options)
+
+            foreach (Option o in foobar)
             {
                 context.Option.Add(o);
             }

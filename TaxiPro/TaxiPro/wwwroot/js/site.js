@@ -3,7 +3,9 @@ var checkboxes = $("input[type='checkbox']"),
     button = $("a.IU.btn.btn-default");
 
 checkboxes.click(function () {
-    button.attr("disabled", !checkboxes.is(":checked"));
+    button.attr("disabled", !checkboxes.is(":checked"))
+    button.addClass("button")
+    button.removeClass;
 });
 
 

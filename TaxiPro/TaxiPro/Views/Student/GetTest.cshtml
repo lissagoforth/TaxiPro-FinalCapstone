@@ -7,34 +7,40 @@
 
 <h2>Welcome, @Model.Student.FirstName @Model.Student.LastName</h2>
 
-    <form asp-action="AddTest" method="post">
-@for(int i = 0; i < Model.Questions.Count(); i++ )
-{
-    int num = (i + 1);
-            <div class="qset">
-
-                <h4> @num.) @Model.Questions[@i].Content </h4>
-                @if (Model.Questions[i].Content.Contains("attached map"))
-                {
-                    <div><img src="~/images/TaxiPro Test Map.png" width="680" height="400" /></div>
-                }
-                @foreach (var opt in Model.Questions[i].Options)
+<form asp-action="AddTest" method="post">
+    @for (int i = 0; i < Model.Questions.Count(); i++)
     {
-            <div>
-                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" onclick="" />
-                <input name="StudentId" type="hidden" value="@Model.Student.Id" />
-                <input name="eventId" type="hidden" value="@Model.EventId" />
-                <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />
-                <label for="@opt.QuestionId-@opt.Id">@opt.Content</label>
-            </div>
-}
+        int num = (i + 1);
+        <div class="panel panel-default">
 
-            </div>
+            <h4 class="panel-heading"> @num.) @Model.Questions[@i].Content </h4>
+            @if (Model.Questions[i].Content.Contains("attached map"))
+            {
+                <div><img src="~/images/TaxiPro Test Map.png" width="680" height="400" /></div>
+            }
+            @if(Model.Options.Count() != 0)
+            {
+                @foreach (var opt in Model.Questions[i].Options)
+                {
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" class="list-group-item" />
+                            </span>
+                            <input name="StudentId" type="hidden" value="@Model.Student.Id" />
+                            <input name="eventId" type="hidden" value="@Model.EventId" />
+                            <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />
+                            <label class="form-control" for="@opt.QuestionId-@opt.Id">@opt.Content</label>
+                        </div>
 
-}
-        <div>
-            <input type="submit"/>
+                }
+            }
+
         </div>
-    </form>
+
+    }
+    <div>
+        <input type="submit" class="button" />
+    </div>
+</form>
 
 

@@ -418,15 +418,16 @@ namespace TaxiPro.Controllers
         {
             List<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId).ToList();
             List<Option> to = new List<Option>();
-
-            foreach (var item in tq)
-            {
-                var options = _context.Option.Where(o => o.QuestionId == item.Id);
-                foreach (var opt in options)
+            
+                for(int i = 0; i < tq.Count(); i++)
                 {
-                    to.Add(opt);
+                var options = _context.Option.Where(o => o.QuestionId == tq[i].Id).ToList();
+                    foreach (var opt in options)
+                    {
+                        to.Add(opt);
+                    }
                 }
-            }
+
 
             var tsvm = new TestSetViewModel();
 

@@ -10,16 +10,41 @@
     padding-right: 15px;
 }
 
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(128, 128, 128, .4);
+    color: white;
+    text-align: center;
+}
+
 .section {
     border-bottom: 1px solid lightgrey;
     margin: 3px;
     padding: 3px;
 }
 
-.courseResult {
-    border-bottom: 1px solid lightgrey;
-    margin: 3px;
-    padding: 3px;
+.button {
+    background-color:#030b54;
+    border-radius: 5px;
+    color: aliceblue;
+    
+}
+
+.homeLogo {
+    color: aliceblue;
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.homeLogo:hover{
+    color:white;
+    text-decoration: none;
 }
 
 .correctAnswer {
