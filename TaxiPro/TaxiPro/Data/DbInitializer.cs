@@ -13,10 +13,10 @@ namespace TaxiPro.Data
             context.Database.EnsureCreated();
 
             // Look for any test types
-            if (context.TestType.Any())
-            {
-                return;   // DB has been seeded
-            }
+            //if (context.TestType.Any())
+            //{
+            //    return;   // DB has been seeded
+            //}
 
             var students = new Student[]
             {
@@ -1464,25 +1464,25 @@ namespace TaxiPro.Data
                 {
                     Content = "The city of Berry Hill",
                     IsCorrect = true,
-                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the map, south of Downtown. What is 'H'?").Id
+                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the attached map, south of Downtown. What is 'H'?").Id
                 },
                 new Option
                 {
                     Content = "The city of Goodlettsville",
                     IsCorrect = false,
-                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the map, south of Downtown. What is 'H'?").Id
+                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the attached map, south of Downtown. What is 'H'?").Id
                 },
                 new Option
                 {
                     Content = "The suburb of Brentwood",
                     IsCorrect = false,
-                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the map, south of Downtown. What is 'H'?").Id
+                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the attached map, south of Downtown. What is 'H'?").Id
                 },
                 new Option
                 {
                     Content = "The neighborhood of 12 South",
                     IsCorrect = false,
-                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the map, south of Downtown. What is 'H'?").Id
+                    QuestionId = context.Question.SingleOrDefault(q => q.Content == "'H' is marked on the attached map, south of Downtown. What is 'H'?").Id
                 },
                 new Option
                 {
