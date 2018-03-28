@@ -18,19 +18,19 @@
             {
                 <div><img src="~/images/TaxiPro Test Map.png" width="680" height="400" /></div>
             }
-            @if(Model.Options.Count() != 0)
+            @if (Model.Options.Count() != 0)
             {
                 @foreach (var opt in Model.Questions[i].Options)
                 {
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                                <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" class="list-group-item" />
-                            </span>
-                            <input name="StudentId" type="hidden" value="@Model.Student.Id" />
-                            <input name="eventId" type="hidden" value="@Model.EventId" />
-                            <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />
-                            <label class="form-control" for="@opt.QuestionId-@opt.Id">@opt.Content</label>
-                        </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="@opt.QuestionId-@opt.Id" type="radio" name="OptionIds[@i]" value="@opt.Id" class="list-group-item" required/>
+                        </span>
+                        <input name="StudentId" type="hidden" value="@Model.Student.Id" />
+                        <input name="eventId" type="hidden" value="@Model.EventId" />
+                        <input name="TestTypeId" type="hidden" value="@Model.TestTypeId" />
+                        <label class="form-control" for="@opt.QuestionId-@opt.Id">@opt.Content</label>
+                    </div>
 
                 }
             }
@@ -38,9 +38,9 @@
         </div>
 
     }
-    <div>
-        <input type="submit" class="button" />
-    </div>
+        <div>
+            <input type="submit" class="button" />
+        </div>
 </form>
 
 

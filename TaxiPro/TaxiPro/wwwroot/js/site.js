@@ -26,8 +26,10 @@ function nextVideo(divId) {
     i ++
     }
 
+function inputCheck() {
 
-function count() {
-    var answered = 0;
-    answered ++
+    // loop over questions
+    // check for user input (answer selection)
+    // if null throw alert "Number i has not been answered..."
+    // if every question is answered addTest() (Allow submission)
 }
