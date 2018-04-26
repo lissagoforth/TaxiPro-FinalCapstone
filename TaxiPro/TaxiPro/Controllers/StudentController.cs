@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +18,7 @@ namespace TaxiPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        bool activeTest = false;
 
         public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -370,6 +371,7 @@ namespace TaxiPro.Controllers
         {
             var student = new Student();
             student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
+            activeTest = true;
        
             return View(student);
         }
@@ -377,6 +379,7 @@ namespace TaxiPro.Controllers
         // GET: Videos
         public IActionResult GetVideo(int i, int test, int studentId, int eventId)
         {
+
             List<Video> tv = _context.Video.ToList();
             var student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
             if (test == 1)

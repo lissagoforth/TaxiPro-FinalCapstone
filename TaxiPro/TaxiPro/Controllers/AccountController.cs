@@ -35,7 +35,7 @@ namespace TaxiPro.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-        }
+        } 
 
         [TempData]
         public string ErrorMessage { get; set; }
