@@ -6,5 +6,5 @@
 <h2>Congratulations, @Model.FirstName @Model.LastName</h2>
 
 <p>You have completed the TaxiPro Course. Please return to the front desk and let the attendant know that you have finished.</p>
-<a asp-controller="Student" asp-action="Index">Back to List</a>
+<form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="button">Finish</form>
 
