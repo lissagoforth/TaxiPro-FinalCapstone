@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<div class="wrapper">
+    @await Html.PartialAsync("_NavbarPartial")
+
+</div>
 
 <h2>Delete</h2>
 
@@ -54,7 +58,7 @@
             @Html.DisplayFor(model => model.Phone)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="button btn btn-default" /> |

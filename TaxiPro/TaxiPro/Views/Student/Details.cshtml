@@ -4,6 +4,10 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="wrapper">
+    @await Html.PartialAsync("_NavbarPartial")
+
+</div>
 
 <h2>@Model.Student.FirstName @Model.Student.LastName</h2>
 <div>
@@ -11,9 +15,9 @@
         <input type="hidden" name="StudentId" value="@Model.Student.Id" />
         <input type="hidden" name="EventTypeId" value="2" />
         <input type="hidden" name="User" value="@Context.User" />
-        <input type="submit" value="Start Course"class="button" /> |
-    <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Start Course" class="button" /> |
+        <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
     </form>
 </div>
 
@@ -30,9 +34,9 @@
 
 <div class="panel panel-default col-md-4">
     <h4 class="panel-heading"><strong>Notes</strong> </h4>
-    @foreach(var evt in Model.Events)
+    @foreach (var evt in Model.Events)
     {
-        if(evt.EventTypeId == 1)
+        if (evt.EventTypeId == 1)
         {
             <div class="list-group-item">
                 <p class="panel-title"><strong>@evt.User.UserName: </strong></p>
@@ -45,16 +49,16 @@
         <input class="panel-body list-group" name="Content" />
         <input type="hidden" name="StudentId" value="@Model.Student.Id" />
         <input type="hidden" name="EventTypeId" value="1" />
-        <input type="submit" value="Add Note" class="button form-control"/>
+        <input type="submit" value="Add Note" class="button form-control" />
     </form>
 </div>
 
 <div class="col-md-4 panel panel-default">
     <h4 class="panel-heading"><strong>Course Results</strong></h4>
-        @foreach(var r in Model.Results)
+    @foreach (var r in Model.Results)
+    {
+        if (r.MapsTest != null)
         {
-            if(r.MapsTest != null)
-            {
             <div class="panel-body list-group-item">
                 <p class="panel-title"><strong>Course initiated by: </strong>@r.MapsTest.User.UserName on @r.DateTime</p>
 
@@ -62,8 +66,8 @@
 
                 <p class="list-group-item"><a asp-action="TestDetail" asp-route-testTypeId="1" asp-route-studentId="@Model.Student.Id" asp-route-eventId="@r.OrdinancesTest.EventId"><strong>Taxi Ordinances: </strong></a>@r.OrdinancesTest.Correct correct out of 30.</p>
             </div>
-            }
         }
+    }
 
 
     <div>
@@ -71,9 +75,9 @@
             <input type="hidden" name="StudentId" value="@Model.Student.Id" />
             <input type="hidden" name="EventTypeId" value="2" />
             <input type="hidden" name="User" value="@Context.User" />
-            <input type="submit" value="Start Course" class="button"/> |
-        <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-        </form> 
+            <input type="submit" value="Start Course" class="button" /> |
+            <a asp-action="Edit" asp-route-id="@Model.Student.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </form>
     </div>
 </div>
