@@ -18,7 +18,6 @@ namespace TaxiPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        bool activeTest = false;
 
         public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -61,7 +60,7 @@ namespace TaxiPro.Controllers
                         var bank = new List<StudentAnswer>();
 
                         bank = _context.StudentAnswer.Include(sa => sa.Option).ThenInclude(o => o.Question).Where(sa => sa.EventId == evt.Id).ToList();
-
+                        Console.WriteLine("EventId: ", evt.Id, "Count: ", bank.Count);
                         if (bank.Count != 0)
                         {
                             spvm.Result = new CourseViewModel()
@@ -301,6 +300,7 @@ namespace TaxiPro.Controllers
 
                     int correct = GradeTest(tr);
                     tr.Correct = correct;
+                   
 
                     if (tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 2)
                     {
@@ -371,7 +371,6 @@ namespace TaxiPro.Controllers
         {
             var student = new Student();
             student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
-            activeTest = true;
        
             return View(student);
         }
