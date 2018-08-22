@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxiPro", "TaxiPro\TaxiPro.csproj", "{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}"
 EndProject
@@ -11,10 +11,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.ActiveCfg = Debug|x86
+		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
