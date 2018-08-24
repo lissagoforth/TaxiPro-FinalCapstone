@@ -10,7 +10,7 @@ namespace TaxiPro.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
 
             // Look for any test types
             if (context.TestType.Any())

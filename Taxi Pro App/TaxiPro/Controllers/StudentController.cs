@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaxiPro.Data;
 using TaxiPro.Models;
 using TaxiPro.Models.ViewModels;
+using System.IO;
+
 
 namespace TaxiPro.Controllers
 {
@@ -50,7 +51,7 @@ namespace TaxiPro.Controllers
                     Student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault(),
                     Events = _context.Event.Include("User").Where(e => e.StudentId == studentId).ToList(),
                     Results = new List<CourseViewModel>(),
-            };
+                };
 
 
                 foreach (var evt in spvm.Events)
@@ -79,7 +80,7 @@ namespace TaxiPro.Controllers
                             spvm.Result.OrdinancesTest.User = evt.User;
                             spvm.Result.OrdinancesTest.Student = spvm.Student;
 
-                            foreach(var a in bank)
+                            foreach (var a in bank)
                             {
                                 if (a.Option.Question.TestTypeId == 2)
                                 {
@@ -116,8 +117,8 @@ namespace TaxiPro.Controllers
             }
         }
 
-            // GET: Students/Create
-            public IActionResult Create()
+        // GET: Students/Create
+        public IActionResult Create()
         {
             return View();
         }
@@ -133,8 +134,22 @@ namespace TaxiPro.Controllers
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
+                //var fpath = "//118-adm-tc1-2/122/ESLS/Taxi Pro/TaxiPro Digital/Students";
+                var fpath = "//LGOFORTH/Users/lgoforth/TestFilePath";
+                if (!Directory.Exists(fpath))
+                {
+                    Directory.CreateDirectory(fpath);
+                    Directory.CreateDirectory(string.Format("{0}/{1} {2}", fpath, student.LastName, student.FirstName));
+                }
+                else
+                {
+                    Directory.CreateDirectory(string.Format("{0}/{1}, {2}", fpath, student.LastName, student.FirstName));
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+
             return View(student);
         }
 
@@ -255,7 +270,7 @@ namespace TaxiPro.Controllers
                 TestTypeId = testViewModel.TestTypeId
             };
 
-            foreach(var opt in tvm.OptionIds)
+            foreach (var opt in tvm.OptionIds)
             {
                 var sa = new StudentAnswer()
                 {
@@ -269,10 +284,21 @@ namespace TaxiPro.Controllers
 
             if (testViewModel.TestTypeId == 2)
             {
-                return RedirectToAction("GetVideo", new {i = 0, test = 2, studentId = student, eventId = testViewModel.EventId});
+                return RedirectToAction("GetVideo", new { i = 0, test = 2, studentId = student, eventId = testViewModel.EventId });
             }
 
-            return RedirectToAction("CourseComplete", new { studentId = student});
+            //var fpath = "//Users/lgoforth/TestFilePath";
+            //if (!Directory.Exists(String.Format("{0}/{1}", fpath, student)))
+            //{
+            //    Directory.CreateDirectory(fpath);
+            //    Directory.CreateDirectory(string.Format("{0}/{1}", fpath, student));
+            //}
+            //else
+            //{
+            //    Directory.CreateDirectory(string.Format("{0}/{1}", fpath, student));
+            //}
+
+            return RedirectToAction("CourseComplete", new { studentId = student });
         }
 
         // GET: Students/AddEvent/5
@@ -286,7 +312,7 @@ namespace TaxiPro.Controllers
 
             var cvm = new CourseViewModel();
 
-            foreach(var evt in spvm.Events)
+            foreach (var evt in spvm.Events)
             {
                 if (evt.EventTypeId == 2)
                 {
@@ -300,16 +326,16 @@ namespace TaxiPro.Controllers
 
                     int correct = GradeTest(tr);
                     tr.Correct = correct;
-                   
+
 
                     if (tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 2)
                     {
                         cvm.MapsTest = tr;
                     }
-                    else if(tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 1)
+                    else if (tr.Answers.SingleOrDefault().Option.Question.TestTypeId == 1)
                     {
                         cvm.OrdinancesTest = tr;
-                    }   
+                    }
                 }
             }
             spvm.Results = new List<CourseViewModel>();
@@ -331,11 +357,11 @@ namespace TaxiPro.Controllers
         }
 
         // POST: Students/AddEvent/5
-       // [HttpPost]
+        // [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEvent(Event evnt)
         {
-            
+
             if (evnt.EventTypeId == 2)
             {
                 var evt = new Event()
@@ -350,7 +376,7 @@ namespace TaxiPro.Controllers
                 return RedirectToAction("StartMessageView", new { studentId = evnt.StudentId, eventId = evt.Id });
             }
 
-            if(evnt.EventTypeId == 1)
+            if (evnt.EventTypeId == 1)
             {
                 var evt = new Event()
                 {
@@ -364,14 +390,14 @@ namespace TaxiPro.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", new { studentId = evnt.StudentId });
             }
-            return RedirectToAction("Details", new { studentId = evnt.StudentId});
+            return RedirectToAction("Details", new { studentId = evnt.StudentId });
         }
 
         public IActionResult StartMessageView(int studentId, int eventId)
         {
             var student = new Student();
             student = _context.Student.Where(s => s.Id == studentId).SingleOrDefault();
-       
+
             return View(student);
         }
 
@@ -395,7 +421,8 @@ namespace TaxiPro.Controllers
                 };
 
                 return View(T1vv);
-            } else if (test == 2)
+            }
+            else if (test == 2)
             {
                 var T2vids = tv.Where(v => v.URL.Contains("Ordinance")).ToList();
                 var T2vv = new VideoViewModel()
@@ -420,15 +447,15 @@ namespace TaxiPro.Controllers
         {
             List<Question> tq = _context.Question.Where(q => q.TestTypeId == testTypeId).ToList();
             List<Option> to = new List<Option>();
-            
-                for(int i = 0; i < tq.Count(); i++)
-                {
+
+            for (int i = 0; i < tq.Count(); i++)
+            {
                 var options = _context.Option.Where(o => o.QuestionId == tq[i].Id).ToList();
-                    foreach (var opt in options)
-                    {
-                        to.Add(opt);
-                    }
+                foreach (var opt in options)
+                {
+                    to.Add(opt);
                 }
+            }
 
 
             var tsvm = new TestSetViewModel();
@@ -441,8 +468,8 @@ namespace TaxiPro.Controllers
             tsvm.TestTypeId = testTypeId;
 
             return View(tsvm);
-        }        
-        
+        }
+
         // GET: Student/TestResultDetailView
         public async Task<IActionResult> TestDetail(int testTypeId, int studentId, int eventId)
         {
@@ -468,9 +495,9 @@ namespace TaxiPro.Controllers
         {
             int correct = 0;
 
-            foreach(var a in trvm.Answers)
+            foreach (var a in trvm.Answers)
             {
-                if(a.Option.IsCorrect == true)
+                if (a.Option.IsCorrect == true)
                 {
                     correct++;
                 }
