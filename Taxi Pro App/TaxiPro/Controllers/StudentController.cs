@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaxiPro.Data;
 using TaxiPro.Models;
 using TaxiPro.Models.ViewModels;
-using System.IO;
 
 
 namespace TaxiPro.Controllers
@@ -284,6 +286,9 @@ namespace TaxiPro.Controllers
 
             if (testViewModel.TestTypeId == 2)
             {
+                var testname = _context.TestType.SingleOrDefault(tt => tt.Id == testViewModel.TestTypeId).Description;
+                var studentname = String.Format("{0}, {1}", _context.Student.SingleOrDefault(s => s.Id == student).LastName, _context.Student.SingleOrDefault(s => s.Id == student).FirstName);
+                var testdate = _context.Event.SingleOrDefault(e => e.Id == eventId).DateTime;
                 return RedirectToAction("GetVideo", new { i = 0, test = 2, studentId = student, eventId = testViewModel.EventId });
             }
 
@@ -514,5 +519,30 @@ namespace TaxiPro.Controllers
 
             return View(student);
         }
+
+        public void SaveTestPDF(Object sender, EventArgs e)
+        {
+            var r = HttpContext.Response;
+            
+
+            //var converter = new HtmlToPdf();
+            //var doc = converter.ConvertUrl("");
+            //doc.Save(string.Format("{0}.pdf", );
+            //doc.Close();
+        }
+        //public string RenderViewToString(string viewName, object model)
+        //{
+        //    ViewData.Model = model;
+        //    using (var sw = new StringWriter())
+        //    {
+        //        var viewResult = Microsoft.AspNetCore.Mvc.ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+        //        var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+        //        viewResult.View.Render(viewContext, sw);
+        //        viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+        //        return sw.GetStringBuilder().ToString();
+        //    }
+        //}
+
+
     }
 }
