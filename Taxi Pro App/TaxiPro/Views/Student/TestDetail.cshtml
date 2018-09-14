@@ -8,9 +8,7 @@
 </div>
 
 <h2>Results for @Model.Questions[0].TestType.Description</h2>
-<button class="button" onclick="SaveTestResult()">Save Test Result</button>
-<br />
-<br />
+
 
 @for (int i = 0; i < Model.Questions.Count(); i++)
 {
@@ -38,23 +36,3 @@
 
 }
 
-    <script>
-        function SaveTestResult() {
-            
-            var dpath = "//Users/lgoforth/TestFilePath";
-            var student = String.Format("{0}, {1}", @Model.Student.LastName, @Model.Student.FirstName)
-            var date = Date.now
-            var fpath = String.Format("{0}/{1}/{2}", dpath, date, student)
-
-
-            if (!Directory.Exists(String.Format("{0}/{1}", dpath, date)))
-            {
-                Directory.CreateDirectory(fpath);
-            }
-            else
-            {
-                Directory.CreateDirectory(fpath);
-            }
-
-        }
-    </script>
