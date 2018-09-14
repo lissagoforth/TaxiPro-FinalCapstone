@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxiPro", "TaxiPro\TaxiPro.csproj", "{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TaxiPro.Installer", "TaxiPro.Installer\TaxiPro.Installer.vdproj", "{AC180C92-D4C5-43A9-AB50-45A4C8769955}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,8 +15,6 @@ Global
 		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB725049-75CD-4BF9-BAA7-551AC6F1BA34}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC180C92-D4C5-43A9-AB50-45A4C8769955}.Debug|Any CPU.ActiveCfg = Debug
-		{AC180C92-D4C5-43A9-AB50-45A4C8769955}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
