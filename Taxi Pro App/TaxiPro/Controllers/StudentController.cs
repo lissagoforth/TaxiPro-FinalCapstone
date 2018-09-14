@@ -264,6 +264,11 @@ namespace TaxiPro.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
+            var coursedate = _context.Event.SingleOrDefault(e => e.Id == eventId).DateTime;
+            var cdate = coursedate.ToString().Split(" ")[0].Replace("/", "-");
+
+            var sname = String.Format("{0}, {1}", _context.Student.SingleOrDefault(s => s.Id == student).LastName, _context.Student.SingleOrDefault(s => s.Id == student).FirstName);
+
             var tvm = new TestViewModel()
             {
                 OptionIds = testViewModel.OptionIds,
@@ -292,16 +297,19 @@ namespace TaxiPro.Controllers
                 return RedirectToAction("GetVideo", new { i = 0, test = 2, studentId = student, eventId = testViewModel.EventId });
             }
 
-            //var fpath = "//Users/lgoforth/TestFilePath";
-            //if (!Directory.Exists(String.Format("{0}/{1}", fpath, student)))
-            //{
-            //    Directory.CreateDirectory(fpath);
-            //    Directory.CreateDirectory(string.Format("{0}/{1}", fpath, student));
-            //}
-            //else
-            //{
-            //    Directory.CreateDirectory(string.Format("{0}/{1}", fpath, student));
-            //}
+            var fpath = "//LGOFORTH/Users/lgoforth/TestFilePath";
+            if (!Directory.Exists(String.Format("{0}/{1}", fpath, sname)))
+            {
+                Directory.CreateDirectory(string.Format("{0}/{1}/{2}", fpath, sname, cdate));
+            }
+            else if (!Directory.Exists(String.Format("{0}/{1}/{2}", fpath, sname, cdate)))
+            {
+                Directory.CreateDirectory(string.Format("{0}/{1}/{2}", fpath, sname, cdate));
+            }
+            else
+            {
+                return RedirectToAction("CourseComplete", new { studentId = student });
+            }
 
             return RedirectToAction("CourseComplete", new { studentId = student });
         }
