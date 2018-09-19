@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using TaxiPro.Data;
 using TaxiPro.Models;
 using TaxiPro.Models.ViewModels;
-
+using Microsoft.Extensions.Configuration;
 
 namespace TaxiPro.Controllers
 {
@@ -21,11 +21,13 @@ namespace TaxiPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private IConfiguration _config;
 
-        public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration iConfig)
         {
             _context = context;
             _userManager = userManager;
+            _config = iConfig;
         }
 
         // GET: Students
@@ -137,7 +139,8 @@ namespace TaxiPro.Controllers
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 //var fpath = "//118-adm-tc1-2/122/ESLS/Taxi Pro/TaxiPro Digital/Students";
-                var fpath = "//LGOFORTH/Users/lgoforth/TestFilePath";
+                var fpath = _config.GetSection("TargetDir").GetSection("Default").Value;
+                //var fpath = "c://TAXIPRO";
                 if (!Directory.Exists(fpath))
                 {
                     Directory.CreateDirectory(fpath);
@@ -297,7 +300,9 @@ namespace TaxiPro.Controllers
                 return RedirectToAction("GetVideo", new { i = 0, test = 2, studentId = student, eventId = testViewModel.EventId });
             }
 
-            var fpath = "//LGOFORTH/Users/lgoforth/TestFilePath";
+            //var fpath = "c://TAXIPRO";
+            var fpath = _config.GetSection("TargetDir").GetSection("Default").Value;
+
             if (!Directory.Exists(String.Format("{0}/{1}", fpath, sname)))
             {
                 Directory.CreateDirectory(string.Format("{0}/{1}/{2}", fpath, sname, cdate));
