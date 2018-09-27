@@ -16,7 +16,6 @@ namespace TaxiPro
     {
         public static void Main(string[] args)
         {
-            //var host = BuildWebHost(args);
             var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
@@ -41,8 +40,5 @@ namespace TaxiPro
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
 
-        //public static IWebHost BuildWebHost(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-                
     }
 }
