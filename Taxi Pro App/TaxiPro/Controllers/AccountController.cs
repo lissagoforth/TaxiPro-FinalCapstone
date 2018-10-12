@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -230,9 +231,9 @@ namespace TaxiPro.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction(nameof(AccountController.Login), "Account");
                 }
                 AddErrors(result);
             }
@@ -247,7 +248,7 @@ namespace TaxiPro.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(StudentController.Index), "Student/Index");
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 
         [HttpPost]
@@ -335,7 +336,7 @@ namespace TaxiPro.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(StudentController.Index), "Student/Index");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -455,10 +456,14 @@ namespace TaxiPro.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(StudentController.Index), "Student/Index");
             }
         }
 
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
         #endregion
     }
 }

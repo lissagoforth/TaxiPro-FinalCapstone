@@ -29,13 +29,25 @@ namespace TaxiPro
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                //Requires users to confirm email before allowing log in
+                config.SignIn.RequireConfirmedEmail = true;
+
+                //set password requirements
+                config.Password.RequireDigit = true;
+                config.Password.RequiredLength = 6;
+                config.Password.RequiredUniqueChars = 1;
+                config.Password.RequireLowercase = true;
+                config.Password.RequireUppercase = true;
+                config.Password.RequireNonAlphanumeric = false;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
  
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddMvc();
         }
 
