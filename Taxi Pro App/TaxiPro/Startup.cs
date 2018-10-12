@@ -32,7 +32,7 @@ namespace TaxiPro
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
                 //Requires users to confirm email before allowing log in
-                //config.SignIn.RequireConfirmedEmail = true;
+                config.SignIn.RequireConfirmedEmail = true;
 
                 //set password requirements
                 config.Password.RequireDigit = true;
@@ -47,7 +47,7 @@ namespace TaxiPro
  
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddMvc();
         }
 

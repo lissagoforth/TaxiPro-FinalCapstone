@@ -13,6 +13,8 @@ using TaxiPro.Data;
 using TaxiPro.Models;
 using TaxiPro.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
+using TaxiPro.Services;
+using System.Text.Encodings.Web;
 
 namespace TaxiPro.Controllers
 {
@@ -22,12 +24,15 @@ namespace TaxiPro.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private IConfiguration _config;
+        private readonly IEmailSender _emailSender;
 
-        public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration iConfig)
+        public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration iConfig, IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
             _config = iConfig;
+            _emailSender = emailSender;
+
         }
 
         // GET: Students
@@ -138,9 +143,8 @@ namespace TaxiPro.Controllers
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
-                //var fpath = "//118-adm-tc1-2/122/ESLS/Taxi Pro/TaxiPro Digital/Students";
                 var fpath = _config.GetSection("TargetDir").GetSection("Default").Value;
-                //var fpath = "c://TAXIPRO";
+
                 if (!Directory.Exists(fpath))
                 {
                     Directory.CreateDirectory(fpath);
@@ -300,7 +304,12 @@ namespace TaxiPro.Controllers
                 return RedirectToAction("GetVideo", new { i = 0, test = 2, studentId = student, eventId = testViewModel.EventId });
             }
 
-            //var fpath = "c://TAXIPRO";
+            string studentFname = _context.Student.SingleOrDefault(s => s.Id == student).FirstName;
+            string studentLname = _context.Student.SingleOrDefault(s => s.Id == student).LastName;
+            string link = string.Format("http://{0}/Student/Details?studentId={1}", _config.GetSection("TargetDir").GetSection("Host").Value, student);
+
+            await _emailSender.SendTestCompletionAsync(user.Email, studentFname, studentLname, link);
+
             var fpath = _config.GetSection("TargetDir").GetSection("Default").Value;
 
             if (!Directory.Exists(String.Format("{0}/{1}", fpath, sname)))
@@ -315,6 +324,8 @@ namespace TaxiPro.Controllers
             {
                 return RedirectToAction("CourseComplete", new { studentId = student });
             }
+
+
 
             return RedirectToAction("CourseComplete", new { studentId = student });
         }
