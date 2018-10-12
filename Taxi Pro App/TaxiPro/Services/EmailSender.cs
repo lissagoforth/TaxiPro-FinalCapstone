@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TaxiPro.Models;
 using Microsoft.Extensions.Options;
 using System.IO;
-using MailKit;
 using MimeKit;
 using MimeKit.Text;
 using MailKit.Net.Smtp;
@@ -47,7 +44,7 @@ namespace TaxiPro.Services
 
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.Connect(_emailSettings.SecondaryDomain, _emailSettings.SecondaryPort, true);
+                    smtp.Connect(_emailSettings.PrimaryDomain, _emailSettings.PrimaryPort, true);
                     smtp.Authenticate(uEmail, upw);
                     smtp.Send(msg);
                     smtp.Disconnect(true);
