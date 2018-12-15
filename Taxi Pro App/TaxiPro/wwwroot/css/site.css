@@ -65,6 +65,44 @@ div.qset, div {
     padding: 2px;
 }
 
+.navbar-inverse {
+    background-color: #030b54;
+    border-color: #080808;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+    color: #030b54
+}
+
+.navbar-default .navbar-brand {
+    color: aliceblue;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: aliceblue;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-text {
+    color: aliceblue;
+}
+
+.navbar-inverse .navbar-link {
+    color: aliceblue;
+}
+
+.navbar-inverse .btn-link {
+    color: aliceblue;
+}
+
+.navbar-inverse .navbar-text {
+    color: aliceblue;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: aliceblue;
+}
 
 /* Carousel */
 .carousel-caption p {
